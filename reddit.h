@@ -102,6 +102,7 @@ public:
     void registerUser();
     void printDetails();
     // TODO: Functions that use other classes
+    void join(Subreddit *&s);
 };
 
 class Moderator : public User

@@ -150,3 +150,10 @@ void Reply::printComment()
     Comment::printComment();
     cout << "ToUser : " << toUserName << endl;
 }
+
+void User::join(Subreddit *&s)
+{
+    cout << "You will be joining r/" << s->name << endl;
+    s->users.push_back(name);
+    cout << "You've successfully joined r/" << s->name << endl;
+}
