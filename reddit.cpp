@@ -108,7 +108,7 @@ void Post::printPost()
     cout << "Post Title : " << postTitle << endl;
     cout << "Date : " << date << endl;
     cout << "Time : " << time << endl;
-    cout << "User : " << userName << endl;
+    cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
 }
 
@@ -121,13 +121,15 @@ void Text::printPost()
 void Image::printPost()
 {
     Post::printPost();
-    cout << imageSize << format << endl;
+    cout << "Image size : " << imageSize << "Mb" << endl;
+    cout << "Image format : " << format << endl;
 }
 
 void Video::printPost()
 {
     Post::printPost();
-    cout << videoSize << format << endl;
+    cout << "Video size : " << videoSize << "Mb" << endl;
+    cout << "Video format : " << format << endl;
 }
 
 void Award::printAward()
@@ -139,7 +141,7 @@ void Comment::printComment()
 {
     cout << "*** COMMENT/REPLY DETAILS ***" << endl;
     cout << "Comment : " << content << endl;
-    cout << "User : " << userName << endl;
+    cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
     cout << "Date : " << date << endl;
     cout << "Time : " << time << endl;
@@ -148,7 +150,7 @@ void Comment::printComment()
 void Reply::printComment()
 {
     Comment::printComment();
-    cout << "ToUser : " << toUserName << endl;
+    cout << "ToUser : u/" << toUserName << endl;
 }
 
 void User::join(Subreddit *&s)
@@ -194,6 +196,7 @@ void User::createPost(Subreddit *&s)
     cout << "3: Video" << endl;
     cout << "Enter your choice: ";
     cin >> choice;
+    getchar();
     switch (choice)
     {
     case 1:
@@ -226,7 +229,7 @@ void User::createPost(Subreddit *&s)
         {
             throw VideoSizeError("Video size cannot exceed 20Mb");
         }
-        cout << "Enter the format of the image: ";
+        cout << "Enter the format of the video: ";
         cin >> videoPost->format;
         videoPost->userName = userId;
         s->posts.push_back(videoPost);
