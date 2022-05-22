@@ -14,6 +14,7 @@ class UserNameError;
 class LengthError;
 class SpaceError;
 class VideoSizeError;
+class InvalidInput;
 
 //*>>>>>>>>>> Regular classes >>>>>>>>>>>>>>
 class User;
@@ -31,6 +32,18 @@ class Comment;
 class Reply;
 
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
+class InvalidInput
+{
+public:
+    string msg;
+    InvalidInput() : msg("") {}
+    InvalidInput(string a) : msg(a) {}
+    void printError()
+    {
+        cout << msg << endl;
+    }
+};
+
 class RegistrationError
 {
 public:
@@ -101,6 +114,7 @@ public:
 
     void registerUser();
     /////// TODO: Functions that use other classes
+    void createPost(Subreddit *&s);
     void join(Subreddit *&s);
     void replyIt(Comment *&c);
     void upvote(Post *&p);
@@ -189,7 +203,7 @@ public:
 
     // TODO Uses Function Handling
 
-    void printPost();
+    virtual void printPost();
 };
 
 class Text : public Post
@@ -198,28 +212,28 @@ public:
     string postContent;
     Text() : Post(), postContent("") {}
     Text(string postTitleInput, string dateInput, string timeInput, string userNameInput, string pInput) : Post(postTitleInput, dateInput, timeInput, userNameInput), postContent(pInput) {}
-    void printText();
+    void printPost();
 };
 
 class Image : public Post
 {
 public:
     double imageSize;
-    string formate;
-    Image() : Post(), imageSize(), formate("") {}
-    Image(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), imageSize(i), formate(f) {}
+    string format;
+    Image() : Post(), imageSize(), format("") {}
+    Image(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), imageSize(i), format(f) {}
 
-    void printImageDetails();
+    void printPost();
 };
 
 class Video : public Post
 {
 public:
     double videoSize;
-    string formate;
-    Video() : Post(), videoSize(), formate("") {}
-    Video(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), videoSize(i), formate(f) {}
-    void printVideoDetails();
+    string format;
+    Video() : Post(), videoSize(), format("") {}
+    Video(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), videoSize(i), format(f) {}
+    void printPost();
 };
 
 class Award
@@ -239,7 +253,7 @@ public:
     string time;
     vector<Comment *> replies;
     Comment() : content(""), score(0), userName(""), date(""), time("") {}
-    Comment(string con, int s, string user, string d, string t) : content(con), score(s), userName(user), date(d), time(t) {}
+    Comment(string con, string user, string d, string t) : content(con), score(0), userName(user), date(d), time(t) {}
 
     ////TODO Uses Function Handling
     void printComment();
@@ -250,7 +264,7 @@ class Reply : public Comment
 public:
     string toUserName;
     Reply() : Comment(), toUserName("") {}
-    Reply(string con, int s, string user, string d, string t, string toUser) : Comment(con, s, user, d, t), toUserName(toUser) {}
+    Reply(string con, string user, string d, string t, string toUser) : Comment(con, user, d, t), toUserName(toUser) {}
     void printComment();
 };
 

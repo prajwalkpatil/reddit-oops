@@ -112,22 +112,22 @@ void Post::printPost()
     cout << "Score : " << score << endl;
 }
 
-void Text::printText()
+void Text::printPost()
 {
     Post::printPost();
     cout << postContent << endl;
 }
 
-void Image::printImageDetails()
+void Image::printPost()
 {
     Post::printPost();
-    cout << imageSize << formate << endl;
+    cout << imageSize << format << endl;
 }
 
-void Video::printVideoDetails()
+void Video::printPost()
 {
     Post::printPost();
-    cout << videoSize << formate << endl;
+    cout << videoSize << format << endl;
 }
 
 void Award::printAward()
@@ -137,7 +137,7 @@ void Award::printAward()
 
 void Comment::printComment()
 {
-    cout << "*** COMMENT DETAILS ***" << endl;
+    cout << "*** COMMENT/REPLY DETAILS ***" << endl;
     cout << "Comment : " << content << endl;
     cout << "User : " << userName << endl;
     cout << "Score : " << score << endl;
@@ -162,10 +162,11 @@ void User::replyIt(Comment *&c)
 {
     Reply *newReply = new Reply();
     cout << "You are replying to: " << endl;
-    cout << c->content << endl;
+    c->printComment();
+    cout << endl;
     cout << "Enter your reply: " << endl;
     getline(cin, newReply->content);
-    newReply->userName = name;
+    newReply->userName = userId;
     newReply->toUserName = c->userName;
     c->replies.push_back(newReply);
 }
@@ -178,4 +179,60 @@ void User::upvote(Post *&p)
 void User::downvote(Post *&p)
 {
     p->score--;
+}
+
+void User::createPost(Subreddit *&s)
+{
+    int choice;
+    Text *textPost;
+    Image *imagePost;
+    Video *videoPost;
+    cout << "You are posting on r/" << s->name << endl;
+    cout << "What is the type of your post? " << endl;
+    cout << "1: Text" << endl;
+    cout << "2: Image" << endl;
+    cout << "3: Video" << endl;
+    cout << "Enter your choice: ";
+    cin >> choice;
+    switch (choice)
+    {
+    case 1:
+        textPost = new Text();
+        cout << "Enter the post title: " << endl;
+        getline(cin, textPost->postTitle);
+        cout << "Enter the text content: " << endl;
+        getline(cin, textPost->postContent);
+        textPost->userName = userId;
+        s->posts.push_back(textPost);
+        break;
+    case 2:
+        imagePost = new Image();
+        cout << "Enter the post title: " << endl;
+        getline(cin, imagePost->postTitle);
+        cout << "Enter the size of the image in Megabytes: ";
+        cin >> imagePost->imageSize;
+        cout << "Enter the format of the image: ";
+        cin >> imagePost->format;
+        imagePost->userName = userId;
+        s->posts.push_back(imagePost);
+        break;
+    case 3:
+        videoPost = new Video();
+        cout << "Enter the post title: " << endl;
+        getline(cin, videoPost->postTitle);
+        cout << "Enter the size of the video in Megabytes: ";
+        cin >> videoPost->videoSize;
+        if (videoPost->videoSize > 20)
+        {
+            throw VideoSizeError("Video size cannot exceed 20Mb");
+        }
+        cout << "Enter the format of the image: ";
+        cin >> videoPost->format;
+        videoPost->userName = userId;
+        s->posts.push_back(videoPost);
+        break;
+    default:
+        throw InvalidInput("Enter a valid choice.");
+        break;
+    }
 }
