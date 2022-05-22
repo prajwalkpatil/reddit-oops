@@ -95,14 +95,17 @@ public:
     vector<Post *> posts;
     Inbox *userInbox;
 
-    // TODO: Functions ------------------------------------------------------
+    ///// TODO: Functions ------------------------------------------------------
     User() : email(""), name(""), userId(""), age(0){};
     User(string emailInput, string nameInput, string userIdInput, int ageInput) : email(emailInput), name(nameInput), userId(userIdInput), age(ageInput){};
 
     void registerUser();
-    void printDetails();
-    // TODO: Functions that use other classes
+    /////// TODO: Functions that use other classes
     void join(Subreddit *&s);
+    void replyIt(Comment *&c);
+    void upvote(Post *&p);
+    void downvote(Post *&p);
+    void printDetails();
 };
 
 class Moderator : public User
@@ -234,7 +237,7 @@ public:
     string userName;
     string date;
     string time;
-
+    vector<Comment *> replies;
     Comment() : content(""), score(0), userName(""), date(""), time("") {}
     Comment(string con, int s, string user, string d, string t) : content(con), score(s), userName(user), date(d), time(t) {}
 

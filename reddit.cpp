@@ -157,3 +157,25 @@ void User::join(Subreddit *&s)
     s->users.push_back(name);
     cout << "You've successfully joined r/" << s->name << endl;
 }
+
+void User::replyIt(Comment *&c)
+{
+    Reply *newReply = new Reply();
+    cout << "You are replying to: " << endl;
+    cout << c->content << endl;
+    cout << "Enter your reply: " << endl;
+    getline(cin, newReply->content);
+    newReply->userName = name;
+    newReply->toUserName = c->userName;
+    c->replies.push_back(newReply);
+}
+
+void User::upvote(Post *&p)
+{
+    p->score++;
+}
+
+void User::downvote(Post *&p)
+{
+    p->score--;
+}
