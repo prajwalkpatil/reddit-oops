@@ -4,7 +4,7 @@ void User::registerUser()
 {
     cout << "********* REGISTER *********" << endl;
     cout << "Name: ";
-    cin >> name;
+    getline(cin, name);
 
     cout << "Email: ";
     cin >> email;

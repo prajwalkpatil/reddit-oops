@@ -30,7 +30,7 @@ class Award;
 class Comment;
 class Reply;
 
-//* >>>>>>>>> Class decalrations >>>>>>>>>>>>>
+//* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class RegistrationError
 {
 public:
@@ -93,15 +93,15 @@ public:
     int age;
     vector<Award *> awards;
     vector<Post *> posts;
-    Inbox inbox;
+    Inbox *userInbox;
 
     // TODO: Functions ------------------------------------------------------
     User() : email(""), name(""), userId(""), age(0){};
     User(string emailInput, string nameInput, string userIdInput, int ageInput) : email(emailInput), name(nameInput), userId(userIdInput), age(ageInput){};
 
     void registerUser();
-    // TODO: Functions that use other classes
     void printDetails();
+    // TODO: Functions that use other classes
 };
 
 class Moderator : public User
