@@ -94,7 +94,12 @@ void Message::printMsg()
 void Inbox::printInbox()
 {
     cout << "No. Of Notification : " << noOfNotification << endl;
-    // TODO: print all Notification from Notification Class
+    ///// TODO: print all Notification from Notification Class
+    for (auto i : notifs)
+    {
+        i->printMsg();
+        cout << endl;
+    }
 }
 
 void Inbox::clearInbox()
@@ -229,9 +234,15 @@ void User::commentIt(Post *&p)
 
 string getDateTime()
 {
+    string temp;
     time_t _tm = time(NULL);
     struct tm *curtime = localtime(&_tm);
-    return asctime(curtime);
+    temp = asctime(curtime);
+    if (!temp.empty() && temp[temp.length() - 1] == '\n')
+    {
+        temp.erase(temp.length() - 1);
+    }
+    return temp;
 }
 
 Post *Post::createPost(PostType pType)
@@ -279,3 +290,32 @@ Post *Post::createPost(PostType pType)
         return videoPost;
     }
 }
+
+Logger *Logger::getInstance()
+{
+    if (!instance)
+    {
+        instance = new Logger();
+    }
+    return instance;
+}
+
+string Logger::getLog()
+{
+    return this->logMessage;
+}
+
+void Logger::setLog(string msg)
+{
+    this->logMessage = msg;
+}
+
+void Logger::writeLog()
+{
+    ofstream logFile;
+    logFile.open("log.txt", std::ios_base::app);
+    logFile << getDateTime();
+    logFile << " | " << logMessage << endl;
+    logFile.close();
+}
+Logger *Logger::instance = 0;

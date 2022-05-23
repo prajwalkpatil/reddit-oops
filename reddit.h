@@ -5,6 +5,7 @@
 #include <string>
 #include <exception>
 #include <vector>
+#include <fstream>
 #include <time.h>
 using namespace std;
 
@@ -39,7 +40,7 @@ class Video;
 class Award;
 class Comment;
 class Reply;
-
+class Logger;
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
@@ -274,6 +275,20 @@ public:
     Reply() : Comment(), toUserName("") {}
     Reply(string con, string user, string dt, string toUser) : Comment(con, user, dt), toUserName(toUser) {}
     void printComment();
+};
+
+class Logger
+{
+private:
+    static Logger *instance;
+    string logMessage;
+    Logger() : logMessage("") {}
+
+public:
+    static Logger *getInstance();
+    string getLog();
+    void setLog(string msg);
+    void writeLog();
 };
 
 //*******************  CLASSES - END *****************************
