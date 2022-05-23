@@ -106,8 +106,7 @@ void Post::printPost()
 {
     cout << "*** POST DETAILS ***" << endl;
     cout << "Post Title : " << postTitle << endl;
-    cout << "Date : " << date << endl;
-    cout << "Time : " << time << endl;
+    cout << "Date-Time: " << dateTime << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
 }
@@ -143,8 +142,7 @@ void Comment::printComment()
     cout << "Comment : " << content << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
-    cout << "Date : " << date << endl;
-    cout << "Time : " << time << endl;
+    cout << "Date-Time : " << dateTime << endl;
 }
 
 void Reply::printComment()
@@ -169,6 +167,7 @@ void User::replyIt(Comment *&c)
     cout << "Enter your reply: " << endl;
     getline(cin, newReply->content);
     newReply->userName = userId;
+    newReply->dateTime = getDateTime();
     newReply->toUserName = c->userName;
     c->replies.push_back(newReply);
 }
@@ -206,6 +205,7 @@ void User::createPost(Subreddit *&s)
         cout << "Enter the text content: " << endl;
         getline(cin, textPost->postContent);
         textPost->userName = userId;
+        textPost->dateTime = getDateTime();
         s->posts.push_back(textPost);
         break;
     case 2:
@@ -217,6 +217,7 @@ void User::createPost(Subreddit *&s)
         cout << "Enter the format of the image: ";
         cin >> imagePost->format;
         imagePost->userName = userId;
+        imagePost->dateTime = getDateTime();
         s->posts.push_back(imagePost);
         break;
     case 3:
@@ -232,10 +233,30 @@ void User::createPost(Subreddit *&s)
         cout << "Enter the format of the video: ";
         cin >> videoPost->format;
         videoPost->userName = userId;
+        videoPost->dateTime = getDateTime();
         s->posts.push_back(videoPost);
         break;
     default:
         throw InvalidInput("Enter a valid choice.");
         break;
     }
+}
+
+void User::commentIt(Post *&p)
+{
+    Comment *newComment = new Comment();
+    cout << "You are commenting to: " << endl;
+    p->printPost();
+    cout << "Enter your comment: " << endl;
+    getline(cin, newComment->content);
+    newComment->dateTime = getDateTime();
+    newComment->userName = userId;
+    p->comments.push_back(newComment);
+}
+
+string getDateTime()
+{
+    time_t _tm = time(NULL);
+    struct tm *curtime = localtime(&_tm);
+    return asctime(curtime);
 }

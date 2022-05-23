@@ -5,8 +5,10 @@
 #include <string>
 #include <exception>
 #include <vector>
+#include <time.h>
 using namespace std;
 
+string getDateTime();
 //*>>>>>>>>>> Exception classes >>>>>>>>>>>>
 class RegistrationError;
 class MinAgeError;
@@ -117,6 +119,7 @@ public:
     void createPost(Subreddit *&s);
     void join(Subreddit *&s);
     void replyIt(Comment *&c);
+    void commentIt(Post *&p);
     void upvote(Post *&p);
     void downvote(Post *&p);
     void printDetails();
@@ -144,7 +147,7 @@ public:
     vector<Moderator *> mods;
     vector<string> users;
 
-    // TODO: Functions ----------------
+    ///////////TODO: Functions ----------------
     Subreddit() : name(""){};
     Subreddit(string nameInput) : name(nameInput){};
 
@@ -192,14 +195,13 @@ class Post
 {
 public:
     string postTitle;
-    string date;
-    string time;
+    string dateTime;
     string userName;
     int score;
     vector<Comment *> comments;
 
-    Post() : postTitle(""), date(""), time(""), userName(""), score(0) {}
-    Post(string pt, string d, string t, string user) : postTitle(pt), date(d), time(t), userName(user), score(0) {}
+    Post() : postTitle(""), dateTime(""), userName(""), score(0) {}
+    Post(string pt, string dt, string user) : postTitle(pt), dateTime(dt), userName(user), score(0) {}
 
     // TODO Uses Function Handling
 
@@ -211,7 +213,7 @@ class Text : public Post
 public:
     string postContent;
     Text() : Post(), postContent("") {}
-    Text(string postTitleInput, string dateInput, string timeInput, string userNameInput, string pInput) : Post(postTitleInput, dateInput, timeInput, userNameInput), postContent(pInput) {}
+    Text(string postTitleInput, string dateTimeInput, string userNameInput, string pInput) : Post(postTitleInput, dateTimeInput, userNameInput), postContent(pInput) {}
     void printPost();
 };
 
@@ -220,8 +222,8 @@ class Image : public Post
 public:
     double imageSize;
     string format;
-    Image() : Post(), imageSize(), format("") {}
-    Image(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), imageSize(i), format(f) {}
+    Image() : Post(), imageSize(0), format("") {}
+    Image(string postTitle, string dateTime, string userName, double i, string f) : Post(postTitle, dateTime, userName), imageSize(i), format(f) {}
 
     void printPost();
 };
@@ -231,8 +233,8 @@ class Video : public Post
 public:
     double videoSize;
     string format;
-    Video() : Post(), videoSize(), format("") {}
-    Video(string postTitle, string date, string time, string userName, double i, string f) : Post(postTitle, date, time, userName), videoSize(i), format(f) {}
+    Video() : Post(), videoSize(0), format("") {}
+    Video(string postTitleInput, string dateTimeInput, string userNameInput, string pInput, double i, string f) : Post(postTitleInput, dateTimeInput, userNameInput), videoSize(i), format(f) {}
     void printPost();
 };
 
@@ -249,11 +251,10 @@ public:
     string content;
     int score;
     string userName;
-    string date;
-    string time;
+    string dateTime;
     vector<Comment *> replies;
-    Comment() : content(""), score(0), userName(""), date(""), time("") {}
-    Comment(string con, string user, string d, string t) : content(con), score(0), userName(user), date(d), time(t) {}
+    Comment() : content(""), score(0), userName(""), dateTime("") {}
+    Comment(string con, string user, string dt) : content(con), score(0), userName(user), dateTime(dt) {}
 
     ////TODO Uses Function Handling
     void printComment();
@@ -264,7 +265,7 @@ class Reply : public Comment
 public:
     string toUserName;
     Reply() : Comment(), toUserName("") {}
-    Reply(string con, string user, string d, string t, string toUser) : Comment(con, user, d, t), toUserName(toUser) {}
+    Reply(string con, string user, string dt, string toUser) : Comment(con, user, dt), toUserName(toUser) {}
     void printComment();
 };
 
