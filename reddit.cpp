@@ -185,9 +185,8 @@ void User::downvote(Post *&p)
 void User::createPost(Subreddit *&s)
 {
     int choice;
-    Text *textPost;
-    Image *imagePost;
-    Video *videoPost;
+    Post *newPost;
+    PostType t;
     cout << "You are posting on r/" << s->name << endl;
     cout << "What is the type of your post? " << endl;
     cout << "1: Text" << endl;
@@ -199,47 +198,21 @@ void User::createPost(Subreddit *&s)
     switch (choice)
     {
     case 1:
-        textPost = new Text();
-        cout << "Enter the post title: " << endl;
-        getline(cin, textPost->postTitle);
-        cout << "Enter the text content: " << endl;
-        getline(cin, textPost->postContent);
-        textPost->userName = userId;
-        textPost->dateTime = getDateTime();
-        s->posts.push_back(textPost);
+        t = PT_TextPost;
         break;
     case 2:
-        imagePost = new Image();
-        cout << "Enter the post title: " << endl;
-        getline(cin, imagePost->postTitle);
-        cout << "Enter the size of the image in Megabytes: ";
-        cin >> imagePost->imageSize;
-        cout << "Enter the format of the image: ";
-        cin >> imagePost->format;
-        imagePost->userName = userId;
-        imagePost->dateTime = getDateTime();
-        s->posts.push_back(imagePost);
+        t = PT_ImagePost;
         break;
     case 3:
-        videoPost = new Video();
-        cout << "Enter the post title: " << endl;
-        getline(cin, videoPost->postTitle);
-        cout << "Enter the size of the video in Megabytes: ";
-        cin >> videoPost->videoSize;
-        if (videoPost->videoSize > 20)
-        {
-            throw VideoSizeError("Video size cannot exceed 20Mb");
-        }
-        cout << "Enter the format of the video: ";
-        cin >> videoPost->format;
-        videoPost->userName = userId;
-        videoPost->dateTime = getDateTime();
-        s->posts.push_back(videoPost);
+        t = PT_VideoPost;
         break;
     default:
         throw InvalidInput("Enter a valid choice.");
         break;
     }
+    newPost = newPost->createPost(t);
+    newPost->userName = userId;
+    s->posts.push_back(newPost);
 }
 
 void User::commentIt(Post *&p)
@@ -259,4 +232,50 @@ string getDateTime()
     time_t _tm = time(NULL);
     struct tm *curtime = localtime(&_tm);
     return asctime(curtime);
+}
+
+Post *Post::createPost(PostType pType)
+{
+    Post *pNew;
+    Text *textPost;
+    Image *imagePost;
+    Video *videoPost;
+    if (pType == PT_TextPost)
+    {
+        textPost = new Text();
+        cout << "Enter the post title: " << endl;
+        getline(cin, textPost->postTitle);
+        cout << "Enter the text content: " << endl;
+        getline(cin, textPost->postContent);
+        textPost->dateTime = getDateTime();
+        return textPost;
+    }
+    else if (pType == PT_ImagePost)
+    {
+        imagePost = new Image();
+        cout << "Enter the post title: " << endl;
+        getline(cin, imagePost->postTitle);
+        cout << "Enter the size of the image in Megabytes: ";
+        cin >> imagePost->imageSize;
+        cout << "Enter the format of the image: ";
+        cin >> imagePost->format;
+        imagePost->dateTime = getDateTime();
+        return imagePost;
+    }
+    else if (pType == PT_VideoPost)
+    {
+        videoPost = new Video();
+        cout << "Enter the post title: " << endl;
+        getline(cin, videoPost->postTitle);
+        cout << "Enter the size of the video in Megabytes: ";
+        cin >> videoPost->videoSize;
+        if (videoPost->videoSize > 20)
+        {
+            throw VideoSizeError("Video size cannot exceed 20Mb");
+        }
+        cout << "Enter the format of the video: ";
+        cin >> videoPost->format;
+        videoPost->dateTime = getDateTime();
+        return videoPost;
+    }
 }

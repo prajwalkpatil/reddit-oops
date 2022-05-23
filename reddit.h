@@ -8,6 +8,13 @@
 #include <time.h>
 using namespace std;
 
+enum PostType
+{
+    PT_TextPost,
+    PT_ImagePost,
+    PT_VideoPost
+};
+
 string getDateTime();
 //*>>>>>>>>>> Exception classes >>>>>>>>>>>>
 class RegistrationError;
@@ -204,7 +211,7 @@ public:
     Post(string pt, string dt, string user) : postTitle(pt), dateTime(dt), userName(user), score(0) {}
 
     // TODO Uses Function Handling
-
+    static Post *createPost(PostType pType);
     virtual void printPost();
 };
 
