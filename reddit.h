@@ -54,6 +54,7 @@ void messageUserGlobal(vector<User *> &u);
 void commentGlobal(vector<Subreddit *> &s);
 void replyGlobal(vector<Subreddit *> &s);
 void inboxGlobal();
+void voteGlobal(vector<Subreddit *> &s);
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
@@ -143,7 +144,9 @@ public:
     void replyIt(Comment *&c);
     void commentIt(Post *&p);
     void upvote(Post *&p);
+    void upvote(Comment *&p);
     void downvote(Post *&p);
+    void downvote(Comment *&p);
     void printDetails();
     bool validatePassword(string pass);
 };

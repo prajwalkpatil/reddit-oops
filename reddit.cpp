@@ -209,7 +209,17 @@ void User::upvote(Post *&p)
     p->score++;
 }
 
+void User::upvote(Comment *&p)
+{
+    p->score++;
+}
+
 void User::downvote(Post *&p)
+{
+    p->score--;
+}
+
+void User::downvote(Comment *&p)
 {
     p->score--;
 }
@@ -739,9 +749,9 @@ void replyGlobal(vector<Subreddit *> &s)
 
 void inboxGlobal()
 {
-    cout << "====== INBOX =======" << endl;
-    signedInUser->userInbox->printInbox();
     int choice;
+    cout << "======= INBOX =======" << endl;
+    signedInUser->userInbox->printInbox();
     cout << endl;
     cout << "1: Clear Inbox" << endl;
     cout << "2: Exit" << endl;
@@ -753,4 +763,136 @@ void inboxGlobal()
         cout << "Inbox cleared successfully!" << endl;
     }
     return;
+}
+
+void voteGlobal(vector<Subreddit *> &s)
+{
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+    int status = 0;
+    int choice;
+    if (s.size() == 0)
+    {
+        cout << "No subreddits!" << endl;
+        return;
+    }
+    string subName;
+    cout << "=================== VOTE A POST/COMMENT/REPLY =====================" << endl;
+    cout << "Enter the subreddit on which you want to vote: ";
+    cin >> subName;
+    for (i = 0; i < s.size(); i++)
+    {
+        if (s[i]->name == subName)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status == 0)
+    {
+        cout << "Requested Subreddit not found!";
+        throw InvalidInput("Invalid Subreddit name!");
+        return;
+    }
+    for (j = 0; j < s[i]->posts.size(); j++)
+    {
+        cout << " ******************************************** " << endl;
+        s[i]->posts[j]->printPost();
+        cout << " ____________________________________________ " << endl;
+        cout << "1: Upvote this post";
+        cout << "2: Downvote this post";
+        cout << "3: Upvote/Downvote Comments/Replies of this post";
+        cout << "4: Next post";
+        cout << "5: Exit";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice == 4 && j >= s[i]->posts.size() - 1)
+        {
+            cout << "No more posts to show!" << endl;
+            return;
+        }
+        if (choice == 1)
+        {
+            signedInUser->upvote(s[i]->posts[j]);
+            cout << "You have successfully upvoted the post" << endl;
+        }
+        else if (choice == 2)
+        {
+            signedInUser->downvote(s[i]->posts[j]);
+            cout << "You have successfully downvoted the post" << endl;
+        }
+        else if (choice == 3)
+        {
+            for (k = 0; k < s[i]->posts[j]->comments.size(); k++)
+            {
+                cout << " ******************************************** " << endl;
+                s[i]->posts[j]->comments[k]->printComment();
+                cout << " ____________________________________________ " << endl;
+                cout << "1: Upvote this comment";
+                cout << "2: Downvote this comment";
+                cout << "3: Upvote/Downvote Replies of this comment";
+                cout << "4: Next comment";
+                cout << "5: Exit";
+                cout << "Enter your choice: ";
+                cin >> choice;
+                if (choice == 4 && k >= s[i]->posts[j]->comments.size() - 1)
+                {
+                    cout << "No more comments to show!" << endl;
+                    return;
+                }
+                if (choice == 1)
+                {
+                    signedInUser->upvote(s[i]->posts[j]->comments[k]);
+                    cout << "You have successfully upvoted this comment" << endl;
+                    return;
+                }
+                else if (choice == 2)
+                {
+                    signedInUser->downvote(s[i]->posts[j]->comments[k]);
+                    cout << "You have successfully downvoted this comment" << endl;
+                    return;
+                }
+                else if (choice == 3)
+                {
+                    for (l = 0; l < s[i]->posts[j]->comments[k]->replies.size(); l++)
+                    {
+                        cout << " ******************************************** " << endl;
+                        s[i]->posts[j]->comments[k]->replies[l]->printComment();
+                        cout << " ____________________________________________ " << endl;
+                        cout << "1: Upvote this reply";
+                        cout << "2: Downvote this reply";
+                        cout << "3: Next comment";
+                        cout << "4: Exit";
+                        cout << "Enter your choice: ";
+                        cin >> choice;
+                        if (choice == 3 && l >= s[i]->posts[j]->comments[k]->replies.size() - 1)
+                        {
+                            cout << "No more replies!" << endl;
+                            return;
+                        }
+                        if (choice == 1)
+                        {
+                            signedInUser->upvote(s[i]->posts[j]->comments[k]->replies[l]);
+                            cout << "You have successfully upvoted this reply" << endl;
+                            return;
+                        }
+                        else if (choice == 2)
+                        {
+                            signedInUser->downvote(s[i]->posts[j]->comments[k]->replies[l]);
+                            cout << "You have successfully downvoted this reply" << endl;
+                            return;
+                        }
+                    }
+                    return;
+                }
+            }
+            return;
+        }
+        else if (choice == 5)
+        {
+            return;
+        }
+    }
 }
