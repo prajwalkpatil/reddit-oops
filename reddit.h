@@ -49,6 +49,7 @@ void init(vector<Subreddit *> &s, vector<User *> &u);
 int logIn(vector<User *> u);
 void createPostGlobal(vector<Subreddit *> &s);
 void createSubredditGlobal(vector<Subreddit *> &s);
+void joinSubredditGlobal(vector<Subreddit *> &s);
 
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
@@ -151,9 +152,12 @@ public:
     Moderator() : User(), modId(0){};
     Moderator(string emailInput, string nameInput, string userIdInput, int ageInput, string modIdInput, string passwordInput) : User(emailInput, nameInput, userIdInput, ageInput, passwordInput), modId(modIdInput){};
     void printDetails();
-    void deletePost(/* Subreddit*s */)
+    Moderator *createMod(User *u)
     {
-        // TODO: Function to delete a post from a subreddit
+        Moderator *temp = new Moderator();
+        temp->age = u->age;
+        temp->name = u->name;
+        temp->userId = u->userId;
     }
 };
 

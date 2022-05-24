@@ -518,8 +518,36 @@ void createSubredditGlobal(vector<Subreddit *> &s)
     cout << "Enter the name of subreddit: ";
     cin >> subredditName;
     subredditTemp = new Subreddit(subredditName);
+    Moderator *tempMod = tempMod->createMod(signedInUser);
+    subredditTemp->mods.push_back(tempMod);
     s.push_back(subredditTemp);
     Logger *l = l->getInstance();
     l->setLog("Subreddit created successfully!");
     l->writeLog();
+}
+
+void joinSubredditGlobal(vector<Subreddit *> &s)
+{
+    int status = 0;
+    int i;
+    string subName;
+    s[0]->printSubreddit(s);
+    cout << "=================== CREATE POST =====================";
+    cout << "Enter the subreddit on which you want to join: ";
+    cin >> subName;
+    for (i = 0; i < s.size(); i++)
+    {
+        if (s[i]->name == subName)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status == 0)
+    {
+        cout << "Requested Subreddit not found!";
+        throw InvalidInput("Invalid Subreddit name!");
+        return;
+    }
+    s[i]->users.push_back(signedInUser->name);
 }

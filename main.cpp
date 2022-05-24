@@ -46,11 +46,13 @@ int main()
                 createPostGlobal(s);
                 break;
             case 4:
+                joinSubredditGlobal(s);
                 break;
             case 5:
                 s[0]->printSubreddit(s);
                 break;
             case 6:
+                createSubredditGlobal(s);
                 break;
             default:
                 l = l->getInstance();
