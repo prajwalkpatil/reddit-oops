@@ -27,10 +27,11 @@ int main()
             cout << "7: Comment on a post" << endl;
             cout << "8: Reply to a comment" << endl;
             cout << "9: Create Subreddit" << endl;
-            cout << "10: Exit" << endl;
+            cout << "10: View Inbox" << endl;
+            cout << "11: Exit" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
-            if (loggedInStatus != 1 && choice > 2 && !(choice >= 10))
+            if (loggedInStatus != 1 && choice > 2 && !(choice >= 11))
             {
                 cout << "You must log-in first!" << endl;
                 continue;
@@ -58,13 +59,16 @@ int main()
                 messageUserGlobal(u);
                 break;
             case 7:
-                // TODO: Comment
+                commentGlobal(s);
                 break;
             case 8:
-                // TODO: Reply
+                replyGlobal(s);
                 break;
             case 9:
                 createSubredditGlobal(s);
+                break;
+            case 10:
+
                 break;
             default:
                 l = l->getInstance();

@@ -53,7 +53,7 @@ void joinSubredditGlobal(vector<Subreddit *> &s);
 void messageUserGlobal(vector<User *> &u);
 void commentGlobal(vector<Subreddit *> &s);
 void replyGlobal(vector<Subreddit *> &s);
-
+void inboxGlobal();
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {

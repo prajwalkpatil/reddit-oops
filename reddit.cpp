@@ -122,11 +122,22 @@ void Post::printPost()
     cout << "Date-Time: " << dateTime << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
+
+    if (comments.size() != 0)
+    {
+        cout << "*** COMMENTS ***" << endl;
+        for (auto i : comments)
+        {
+            i->printComment();
+            cout << endl;
+        }
+    }
 }
 
 void Text::printPost()
 {
     Post::printPost();
+    cout << "Post Content: " << endl;
     cout << postContent << endl;
 }
 
@@ -151,11 +162,19 @@ void Award::printAward()
 
 void Comment::printComment()
 {
-    cout << "*** COMMENT/REPLY DETAILS ***" << endl;
     cout << "Comment : " << content << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
     cout << "Date-Time : " << dateTime << endl;
+
+    if (replies.size() != 0)
+    {
+        cout << "*** REPLY DETAILS ***" << endl;
+        for (auto i : replies)
+        {
+            i->printComment();
+        }
+    }
 }
 
 void Reply::printComment()
@@ -621,6 +640,7 @@ void commentGlobal(vector<Subreddit *> &s)
         cout << "2: Next post" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
+        getchar();
         if (choice == 2 && j >= s[i]->posts.size() - 1)
         {
             cout << "No more comments to show!" << endl;
@@ -678,6 +698,7 @@ void replyGlobal(vector<Subreddit *> &s)
         cout << "2: Next post" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
+        getchar();
         if (choice == 2 && j >= s[i]->posts.size() - 1)
         {
             cout << "No more posts to show!" << endl;
@@ -696,6 +717,7 @@ void replyGlobal(vector<Subreddit *> &s)
                 cout << "2: Next comment" << endl;
                 cout << "Enter your choice: ";
                 cin >> choice;
+                getchar();
                 if (choice == 2 && k >= s[i]->posts[j]->comments.size() - 1)
                 {
                     cout << "No more comments to show!" << endl;
@@ -705,7 +727,7 @@ void replyGlobal(vector<Subreddit *> &s)
                 if (choice == 1)
                 {
                     signedInUser->replyIt(s[i]->posts[j]->comments[k]);
-                    cout << "Comment was successfully added!" << endl;
+                    cout << "Reply was successfully added!" << endl;
                     cout << "******************************************** " << endl;
                     return;
                 }
@@ -713,4 +735,22 @@ void replyGlobal(vector<Subreddit *> &s)
         }
     }
     cout << "No reply was added!" << endl;
+}
+
+void inboxGlobal()
+{
+    cout << "====== INBOX =======" << endl;
+    signedInUser->userInbox->printInbox();
+    int choice;
+    cout << endl;
+    cout << "1: Clear Inbox" << endl;
+    cout << "2: Exit" << endl;
+    cout << "Enter the choice: ";
+    cin >> choice;
+    if (choice == 1)
+    {
+        signedInUser->userInbox->clearInbox();
+        cout << "Inbox cleared successfully!" << endl;
+    }
+    return;
 }
