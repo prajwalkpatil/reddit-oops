@@ -493,7 +493,7 @@ void createPostGlobal(vector<Subreddit *> &s)
     int status = 0;
     int i;
     string subName;
-    cout << "=================== CREATE POST =====================";
+    cout << "=================== CREATE POST =====================" << endl;
     cout << "Enter the subreddit on which you want to post: ";
     cin >> subName;
     for (i = 0; i < s.size(); i++)
@@ -534,7 +534,7 @@ void joinSubredditGlobal(vector<Subreddit *> &s)
     int i;
     string subName;
     s[0]->printSubreddit(s);
-    cout << "=================== JOIN SUBREDDIT =====================";
+    cout << "=================== JOIN SUBREDDIT =====================" << endl;
     cout << "Enter the subreddit on which you want to join: ";
     cin >> subName;
     for (i = 0; i < s.size(); i++)
@@ -559,6 +559,7 @@ void messageUserGlobal(vector<User *> &u)
     int status = 0;
     string tempUser;
     int i;
+    cout << "=================== MESSAGE USER =====================" << endl;
     cout << "Enter the user name of Recipient: ";
     cin >> tempUser;
     for (i = 0; i < u.size(); i++)
@@ -588,6 +589,7 @@ void commentGlobal(vector<Subreddit *> &s)
     int i;
     int choice;
     string subName;
+    cout << "=================== COMMENT A POST =====================" << endl;
     cout << "Enter the subreddit on which you want to comment: ";
     cin >> subName;
     for (i = 0; i < s.size(); i++)
@@ -621,21 +623,94 @@ void commentGlobal(vector<Subreddit *> &s)
         cin >> choice;
         if (choice == 2 && j >= s[i]->posts.size() - 1)
         {
-            cout << "No more posts to show!" << endl;
+            cout << "No more comments to show!" << endl;
             cout << " ******************************************** " << endl;
             return;
         }
         if (choice == 1)
         {
             signedInUser->commentIt(s[i]->posts[j]);
-            cout << "Comment added successfully!" << endl;
+            cout << "Comment was added successfully!" << endl;
             cout << " ******************************************** " << endl;
             return;
         }
         cout << " ******************************************** " << endl;
     }
+    cout << "No comment was added!" << endl;
 }
 
 void replyGlobal(vector<Subreddit *> &s)
 {
+    int status = 0;
+    int i;
+    int j = 0;
+    int k = 0;
+    int choice;
+    string subName;
+    cout << "=================== REPLY A COMMENT =====================" << endl;
+    cout << "Enter the subreddit on which you want to comment: ";
+    cin >> subName;
+    for (i = 0; i < s.size(); i++)
+    {
+        if (s[i]->name == subName)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status == 0)
+    {
+        cout << "Requested Subreddit not found!";
+        throw InvalidInput("Invalid Subreddit name!");
+        return;
+    }
+    if (s[i]->posts.size() == 0)
+    {
+        cout << "There are no posts in this subreddit!" << endl;
+        return;
+    }
+    for (j = 0; j < s[i]->posts.size(); j++)
+    {
+        cout << " ******************************************** " << endl;
+        s[i]->posts[j]->printPost();
+        cout << " ____________________________________________ " << endl;
+        cout << "1: Reply to a comment of this" << endl;
+        cout << "2: Next post" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice == 2 && j >= s[i]->posts.size() - 1)
+        {
+            cout << "No more posts to show!" << endl;
+            cout << " ******************************************** " << endl;
+            return;
+        }
+        if (choice == 1)
+        {
+            cout << "=================== COMMENTS =====================" << endl;
+            for (k = 0; k < s[i]->posts[j]->comments.size(); k++)
+            {
+                cout << " ******************************************** " << endl;
+                s[i]->posts[j]->comments[k]->printComment();
+                cout << " ____________________________________________ " << endl;
+                cout << "1: Reply this" << endl;
+                cout << "2: Next comment" << endl;
+                cout << "Enter your choice: ";
+                cin >> choice;
+                if (choice == 2 && k >= s[i]->posts[j]->comments.size() - 1)
+                {
+                    cout << "No more comments to show!" << endl;
+                    cout << " ******************************************** " << endl;
+                    return;
+                }
+                if (choice == 1)
+                {
+                    signedInUser->replyIt(s[i]->posts[j]->comments[k]);
+                    cout << "Comment was successfully added!" << endl;
+                    cout << "******************************************** " << endl;
+                    return;
+                }
+            }
+        }
+    }
+    cout << "No reply was added!" << endl;
 }
