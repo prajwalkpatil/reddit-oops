@@ -47,6 +47,8 @@ void red();
 void reset();
 void init(vector<Subreddit *> &s, vector<User *> &u);
 int logIn(vector<User *> u);
+void createPostGlobal(vector<Subreddit *> &s);
+void createSubredditGlobal(vector<Subreddit *> &s);
 
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput

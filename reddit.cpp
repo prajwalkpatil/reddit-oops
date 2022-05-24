@@ -224,6 +224,10 @@ void User::createPost(Subreddit *&s)
     newPost = newPost->createPost(t);
     newPost->userName = userId;
     s->posts.push_back(newPost);
+    posts.push_back(newPost);
+    Logger *l = l->getInstance();
+    l->setLog("Post created successfully!");
+    l->writeLog();
 }
 
 void User::commentIt(Post *&p)
@@ -480,4 +484,42 @@ bool User::validatePassword(string pass)
         return true;
     }
     return false;
+}
+
+void createPostGlobal(vector<Subreddit *> &s)
+{
+    int status = 0;
+    int i;
+    string subName;
+    cout << "=================== CREATE POST =====================";
+    cout << "Enter the subreddit on which you want to post: ";
+    cin >> subName;
+    for (i = 0; i < s.size(); i++)
+    {
+        if (s[i]->name == subName)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status == 0)
+    {
+        cout << "Requested Subreddit not found!";
+        throw InvalidInput("Invalid Subreddit name!");
+        return;
+    }
+    signedInUser->createPost(s[i]);
+}
+
+void createSubredditGlobal(vector<Subreddit *> &s)
+{
+    string subredditName;
+    Subreddit *subredditTemp;
+    cout << "Enter the name of subreddit: ";
+    cin >> subredditName;
+    subredditTemp = new Subreddit(subredditName);
+    s.push_back(subredditTemp);
+    Logger *l = l->getInstance();
+    l->setLog("Subreddit created successfully!");
+    l->writeLog();
 }

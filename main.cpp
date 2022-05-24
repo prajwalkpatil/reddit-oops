@@ -43,6 +43,7 @@ int main()
                 loggedInStatus = logIn(u);
                 break;
             case 3:
+                createPostGlobal(s);
                 break;
             case 4:
                 break;
