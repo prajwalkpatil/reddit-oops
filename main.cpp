@@ -23,11 +23,14 @@ int main()
             cout << "3: Post" << endl;
             cout << "4: Join Subreddit" << endl;
             cout << "5: Open Feed" << endl;
-            cout << "6: Create Subreddit" << endl;
-            cout << "7: Exit" << endl;
+            cout << "6: Message a user" << endl;
+            cout << "7: Comment on a post" << endl;
+            cout << "8: Reply to a comment" << endl;
+            cout << "9: Create Subreddit" << endl;
+            cout << "10: Exit" << endl;
             cout << "Enter your choice: ";
             cin >> choice;
-            if (loggedInStatus != 1 && choice > 2 && !(choice >= 7))
+            if (loggedInStatus != 1 && choice > 2 && !(choice >= 10))
             {
                 cout << "You must log-in first!" << endl;
                 continue;
@@ -52,6 +55,15 @@ int main()
                 s[0]->printSubreddit(s);
                 break;
             case 6:
+                messageUserGlobal(u);
+                break;
+            case 7:
+                // TODO: Comment
+                break;
+            case 8:
+                // TODO: Reply
+                break;
+            case 9:
                 createSubredditGlobal(s);
                 break;
             default:
@@ -63,6 +75,11 @@ int main()
             }
         }
         catch (RegistrationError r)
+        {
+            r.printError();
+            continue;
+        }
+        catch (InvalidInput r)
         {
             r.printError();
             continue;

@@ -1,6 +1,8 @@
 #include "reddit.h"
+
 User *signedInUser = nullptr;
 bool isLoggedIn = false;
+
 void User::registerUser()
 {
     cout << "********* REGISTER *********" << endl;
@@ -532,7 +534,7 @@ void joinSubredditGlobal(vector<Subreddit *> &s)
     int i;
     string subName;
     s[0]->printSubreddit(s);
-    cout << "=================== CREATE POST =====================";
+    cout << "=================== JOIN SUBREDDIT =====================";
     cout << "Enter the subreddit on which you want to join: ";
     cin >> subName;
     for (i = 0; i < s.size(); i++)
@@ -549,5 +551,33 @@ void joinSubredditGlobal(vector<Subreddit *> &s)
         throw InvalidInput("Invalid Subreddit name!");
         return;
     }
-    s[i]->users.push_back(signedInUser->name);
+    s[i]->users.push_back(signedInUser->userId);
+}
+
+void messageUserGlobal(vector<User *> &u)
+{
+    int status = 0;
+    string tempUser;
+    int i;
+    cout << "Enter the user name of Recipient: ";
+    cin >> tempUser;
+    for (i = 0; i < u.size(); i++)
+    {
+        if (u[i]->userId == tempUser)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status != 1)
+    {
+        cout << "User not found!" << endl;
+        return;
+    }
+    Message *m = new Message();
+    m->fromId = signedInUser->userId;
+    cout << "Enter a message: ";
+    cin >> m->msg;
+    u[i]->userInbox->notifs.push_back(m);
+    cout << "Message sent successfully!" << endl;
 }

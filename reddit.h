@@ -50,7 +50,7 @@ int logIn(vector<User *> u);
 void createPostGlobal(vector<Subreddit *> &s);
 void createSubredditGlobal(vector<Subreddit *> &s);
 void joinSubredditGlobal(vector<Subreddit *> &s);
-
+void messageUserGlobal(vector<User *> &u);
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
