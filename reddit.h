@@ -16,7 +16,6 @@ enum PostType
     PT_VideoPost
 };
 
-string getDateTime();
 //*>>>>>>>>>> Exception classes >>>>>>>>>>>>
 class RegistrationError;
 class MinAgeError;
@@ -41,6 +40,14 @@ class Award;
 class Comment;
 class Reply;
 class Logger;
+
+string getDateTime();
+void display_logo();
+void red();
+void reset();
+void init(vector<Subreddit *> &s, vector<User *> &u);
+void logIn(vector<User *> u);
+
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
@@ -107,8 +114,9 @@ public:
 
 class User
 {
-private:
+protected:
     string email;
+    string password;
 
 public:
     string name;
@@ -119,8 +127,8 @@ public:
     Inbox *userInbox;
 
     ///// TODO: Functions ------------------------------------------------------
-    User() : email(""), name(""), userId(""), age(0){};
-    User(string emailInput, string nameInput, string userIdInput, int ageInput) : email(emailInput), name(nameInput), userId(userIdInput), age(ageInput){};
+    User() : email(""), name(""), userId(""), age(0), password(""){};
+    User(string emailInput, string nameInput, string userIdInput, int ageInput, string passwordInput) : email(emailInput), name(nameInput), userId(userIdInput), age(ageInput), password(passwordInput){};
 
     void registerUser();
     /////// TODO: Functions that use other classes
@@ -131,6 +139,7 @@ public:
     void upvote(Post *&p);
     void downvote(Post *&p);
     void printDetails();
+    bool validatePassword(string pass);
 };
 
 class Moderator : public User
@@ -138,8 +147,7 @@ class Moderator : public User
 public:
     string modId;
     Moderator() : User(), modId(0){};
-    Moderator(string emailInput, string nameInput, string userIdInput, int ageInput, string modIdInput) : User(emailInput, nameInput, userIdInput, ageInput), modId(modIdInput){};
-
+    Moderator(string emailInput, string nameInput, string userIdInput, int ageInput, string modIdInput, string passwordInput) : User(emailInput, nameInput, userIdInput, ageInput, passwordInput), modId(modIdInput){};
     void printDetails();
     void deletePost(/* Subreddit*s */)
     {
@@ -162,6 +170,8 @@ public:
     void printPosts();
     void printUsers();
     void printMods();
+    void printSubreddit();
+    void printSubreddit(vector<Subreddit *> s);
 };
 
 class Notification

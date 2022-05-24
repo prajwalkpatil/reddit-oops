@@ -1,5 +1,6 @@
 #include "reddit.h"
-
+User *signedInUser = nullptr;
+bool isLoggedIn = false;
 void User::registerUser()
 {
     cout << "********* REGISTER *********" << endl;
@@ -25,6 +26,8 @@ void User::registerUser()
     //! Minimum age check - validation
     if (age < 13)
         throw MinAgeError("You must be atleast 13 to be able to register yourself!");
+    cout << "Enter your password: ";
+    cin >> password;
     cout << "****************************" << endl;
 }
 
@@ -319,3 +322,158 @@ void Logger::writeLog()
     logFile.close();
 }
 Logger *Logger::instance = 0;
+
+void display_logo()
+{
+    red();
+    printf("    ____           __    ___ __\n"
+           "   / __ \\___  ____/ /___/ (_) /_\n"
+           "  / /_/ / _ \\/ __  / __  / / __/\n"
+           " / _, _/  __/ /_/ / /_/ / / /_\n"
+           "/_/ |_|\\___/\\__,_/\\__,_/_/\\__/\n");
+    printf("\nThe front page of the internet.\n");
+    reset();
+}
+
+void red()
+{
+    printf("\033[31m");
+}
+
+void reset()
+{
+    printf("\033[0m");
+}
+
+void init(vector<Subreddit *> &s, vector<User *> &u)
+{
+    // TODO: Insert Subreddits
+    Subreddit *s_temp = new Subreddit("askreddit");
+    s.push_back(s_temp);
+    s_temp = new Subreddit("science");
+    s.push_back(s_temp);
+    s_temp = new Subreddit("technology");
+    s.push_back(s_temp);
+    s_temp = new Subreddit("cpp");
+    s.push_back(s_temp);
+
+    Logger *t = t->getInstance();
+    t->setLog("Subreddits initialized!");
+    t->writeLog();
+
+    // TODO: Insert Users
+    User *u_temp = new User("brockvillecircular@gmail.com", "Richard D", "brockvillecircular", 23, "123");
+    u.push_back(u_temp);
+    u_temp = new User("wombatphilips@gmail.com", "John M", "wombatphilips", 19, "123");
+    u.push_back(u_temp);
+    u_temp = new User("costlyhuge@gmail.com", "Rick Astley", "costlyhuge", 28, "123");
+    u.push_back(u_temp);
+    u_temp = new User("scholarstalk@gmail.com", "Henry Smith", "scholarstalk", 32, "123");
+    u.push_back(u_temp);
+    u_temp = new User("freakinginsane@gmail.com", "Prajwal Patil", "freakinginsane", 19, "123");
+    u.push_back(u_temp);
+    signedInUser = u_temp;
+    t = t->getInstance();
+    t->setLog("Users initialized!");
+    t->writeLog();
+}
+
+void Subreddit::printSubreddit()
+{
+    cout << "*********************************" << endl;
+    cout << "r/" << name << endl;
+    cout << "*********************************" << endl;
+    cout << endl;
+    if (users.size() != 0)
+        cout << "===== USERS =====" << endl;
+    red();
+    for (auto i : users)
+    {
+        cout << "u/" << i << endl;
+    }
+    reset();
+
+    if (mods.size() != 0)
+    {
+        cout << endl;
+        cout << endl;
+        cout << "===== MODERATORS =====" << endl;
+    }
+    red();
+    for (auto i : mods)
+    {
+        cout << "u/" << i->userId << " : " << i->modId << endl;
+    }
+    reset();
+    if (posts.size() != 0)
+    {
+        cout << endl;
+        cout << endl;
+        cout << "===== POSTS =====" << endl;
+    }
+    for (auto i : posts)
+    {
+        cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>" << endl;
+        red();
+        i->printPost();
+        reset();
+        cout << endl;
+    }
+    if (posts.size() != 0)
+    {
+        cout << endl;
+        cout << endl;
+    }
+}
+
+void Subreddit::printSubreddit(vector<Subreddit *> s)
+{
+    cout << endl;
+    cout << "============ SUBREDDITS ============" << endl;
+    cout << endl;
+    for (auto i : s)
+    {
+        cout << endl;
+        i->printSubreddit();
+        cout << endl;
+    }
+}
+
+void logIn(vector<User *> u)
+{
+    string temp_username;
+    string temp_password;
+    cout << "********* LOGIN *********" << endl;
+    cout << "Username: ";
+    cin >> temp_username;
+    cout << "Password: ";
+    cin >> temp_password;
+    for (auto i : u)
+    {
+        if (i->userId == temp_username)
+        {
+            if (i->validatePassword(temp_password))
+            {
+                isLoggedIn = true;
+                signedInUser = i;
+                cout << "User logged in successfully!" << endl;
+                Logger *l = l->getInstance();
+                l->setLog("User logged in successfully!");
+                l->writeLog();
+                return;
+            }
+        }
+    }
+    Logger *l = l->getInstance();
+    l->setLog("Log in failed!");
+    l->writeLog();
+    throw InvalidInput("Invalid Username!");
+}
+bool User::validatePassword(string pass)
+{
+    if (password == pass)
+    {
+        return true;
+    }
+    return false;
+}
