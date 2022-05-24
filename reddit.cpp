@@ -29,6 +29,9 @@ void User::registerUser()
     cout << "Enter your password: ";
     cin >> password;
     cout << "****************************" << endl;
+    Logger *l = l->getInstance();
+    l->setLog("User registered in successfully!");
+    l->writeLog();
 }
 
 void User::printDetails()
@@ -439,7 +442,7 @@ void Subreddit::printSubreddit(vector<Subreddit *> s)
     }
 }
 
-void logIn(vector<User *> u)
+int logIn(vector<User *> u)
 {
     string temp_username;
     string temp_password;
@@ -460,7 +463,7 @@ void logIn(vector<User *> u)
                 Logger *l = l->getInstance();
                 l->setLog("User logged in successfully!");
                 l->writeLog();
-                return;
+                return 1;
             }
         }
     }
@@ -468,6 +471,7 @@ void logIn(vector<User *> u)
     l->setLog("Log in failed!");
     l->writeLog();
     throw InvalidInput("Invalid Username!");
+    return 0;
 }
 bool User::validatePassword(string pass)
 {

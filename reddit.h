@@ -46,7 +46,7 @@ void display_logo();
 void red();
 void reset();
 void init(vector<Subreddit *> &s, vector<User *> &u);
-void logIn(vector<User *> u);
+int logIn(vector<User *> u);
 
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
