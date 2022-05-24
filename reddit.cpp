@@ -102,10 +102,9 @@ void Message::printMsg()
 void Inbox::printInbox()
 {
     cout << "No. Of Notification : " << noOfNotification << endl;
-    ///// TODO: print all Notification from Notification Class
-    for (auto i : notifs)
+    for (int i = 0; i < notifs.size(); i++)
     {
-        i->printMsg();
+        notifs[i]->printMsg();
         cout << endl;
     }
 }
@@ -113,6 +112,7 @@ void Inbox::printInbox()
 void Inbox::clearInbox()
 {
     notifs.clear();
+    noOfNotification = 0;
 }
 
 void Post::printPost()
@@ -122,16 +122,6 @@ void Post::printPost()
     cout << "Date-Time: " << dateTime << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
-
-    if (comments.size() != 0)
-    {
-        cout << "*** COMMENTS ***" << endl;
-        for (auto i : comments)
-        {
-            i->printComment();
-            cout << endl;
-        }
-    }
 }
 
 void Text::printPost()
@@ -162,25 +152,17 @@ void Award::printAward()
 
 void Comment::printComment()
 {
+    cout << "*** COMMENT/REPLY DETAILS ***" << endl;
     cout << "Comment : " << content << endl;
     cout << "User : u/" << userName << endl;
     cout << "Score : " << score << endl;
     cout << "Date-Time : " << dateTime << endl;
-
-    if (replies.size() != 0)
-    {
-        cout << "*** REPLY DETAILS ***" << endl;
-        for (auto i : replies)
-        {
-            i->printComment();
-        }
-    }
 }
 
 void Reply::printComment()
 {
     Comment::printComment();
-    cout << "ToUser : u/" << toUserName << endl;
+    cout << "To User : u/" << toUserName << endl;
 }
 
 void User::join(Subreddit *&s)
@@ -472,7 +454,25 @@ void Subreddit::printSubreddit(vector<Subreddit *> s)
     for (auto i : s)
     {
         cout << endl;
-        i->printSubreddit();
+        cout << "*********************************" << endl;
+        cout << "r/" << i->name << endl;
+        cout << "*********************************" << endl;
+        for (auto j : i->posts)
+        {
+            j->printPost();
+            for (auto k : j->comments)
+            {
+                k->printComment();
+                cout << "**** REPLIES *****" << endl;
+                for (auto l : k->replies)
+                {
+                    l->printComment();
+                    cout << endl;
+                }
+                cout << endl;
+            }
+            cout << endl;
+        }
         cout << endl;
     }
 }
@@ -581,6 +581,7 @@ void joinSubredditGlobal(vector<Subreddit *> &s)
         return;
     }
     s[i]->users.push_back(signedInUser->userId);
+    cout << "Joined subreddit successfully!" << endl;
 }
 
 void messageUserGlobal(vector<User *> &u)
@@ -608,7 +609,12 @@ void messageUserGlobal(vector<User *> &u)
     m->fromId = signedInUser->userId;
     cout << "Enter a message: ";
     cin >> m->msg;
+    if (!u[i]->userInbox)
+    {
+        u[i]->userInbox = new Inbox();
+    }
     u[i]->userInbox->notifs.push_back(m);
+    u[i]->userInbox->noOfNotification++;
     cout << "Message sent successfully!" << endl;
 }
 
@@ -751,6 +757,10 @@ void inboxGlobal()
 {
     int choice;
     cout << "======= INBOX =======" << endl;
+    if (!signedInUser->userInbox)
+    {
+        return;
+    }
     signedInUser->userInbox->printInbox();
     cout << endl;
     cout << "1: Clear Inbox" << endl;
@@ -792,7 +802,7 @@ void voteGlobal(vector<Subreddit *> &s)
     }
     if (status == 0)
     {
-        cout << "Requested Subreddit not found!";
+        cout << "Requested Subreddit not found!" << endl;
         throw InvalidInput("Invalid Subreddit name!");
         return;
     }
@@ -801,11 +811,11 @@ void voteGlobal(vector<Subreddit *> &s)
         cout << " ******************************************** " << endl;
         s[i]->posts[j]->printPost();
         cout << " ____________________________________________ " << endl;
-        cout << "1: Upvote this post";
-        cout << "2: Downvote this post";
-        cout << "3: Upvote/Downvote Comments/Replies of this post";
-        cout << "4: Next post";
-        cout << "5: Exit";
+        cout << "1: Upvote this post" << endl;
+        cout << "2: Downvote this post" << endl;
+        cout << "3: Upvote/Downvote Comments/Replies of this post" << endl;
+        cout << "4: Next post" << endl;
+        cout << "5: Exit" << endl;
         cout << "Enter your choice: ";
         cin >> choice;
         if (choice == 4 && j >= s[i]->posts.size() - 1)
@@ -830,11 +840,11 @@ void voteGlobal(vector<Subreddit *> &s)
                 cout << " ******************************************** " << endl;
                 s[i]->posts[j]->comments[k]->printComment();
                 cout << " ____________________________________________ " << endl;
-                cout << "1: Upvote this comment";
-                cout << "2: Downvote this comment";
-                cout << "3: Upvote/Downvote Replies of this comment";
-                cout << "4: Next comment";
-                cout << "5: Exit";
+                cout << "1: Upvote this comment" << endl;
+                cout << "2: Downvote this comment" << endl;
+                cout << "3: Upvote/Downvote Replies of this comment" << endl;
+                cout << "4: Next comment" << endl;
+                cout << "5: Exit" << endl;
                 cout << "Enter your choice: ";
                 cin >> choice;
                 if (choice == 4 && k >= s[i]->posts[j]->comments.size() - 1)
@@ -861,10 +871,10 @@ void voteGlobal(vector<Subreddit *> &s)
                         cout << " ******************************************** " << endl;
                         s[i]->posts[j]->comments[k]->replies[l]->printComment();
                         cout << " ____________________________________________ " << endl;
-                        cout << "1: Upvote this reply";
-                        cout << "2: Downvote this reply";
-                        cout << "3: Next comment";
-                        cout << "4: Exit";
+                        cout << "1: Upvote this reply" << endl;
+                        cout << "2: Downvote this reply" << endl;
+                        cout << "3: Next comment" << endl;
+                        cout << "4: Exit" << endl;
                         cout << "Enter your choice: ";
                         cin >> choice;
                         if (choice == 3 && l >= s[i]->posts[j]->comments[k]->replies.size() - 1)

@@ -131,7 +131,7 @@ public:
     int age;
     vector<Award *> awards;
     vector<Post *> posts;
-    Inbox *userInbox;
+    Inbox *userInbox = nullptr;
 
     ///// TODO: Functions ------------------------------------------------------
     User() : email(""), name(""), userId(""), age(0), password(""){};
