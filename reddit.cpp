@@ -581,3 +581,61 @@ void messageUserGlobal(vector<User *> &u)
     u[i]->userInbox->notifs.push_back(m);
     cout << "Message sent successfully!" << endl;
 }
+
+void commentGlobal(vector<Subreddit *> &s)
+{
+    int status = 0;
+    int i;
+    int choice;
+    string subName;
+    cout << "Enter the subreddit on which you want to comment: ";
+    cin >> subName;
+    for (i = 0; i < s.size(); i++)
+    {
+        if (s[i]->name == subName)
+        {
+            status = 1;
+            break;
+        }
+    }
+    if (status == 0)
+    {
+        cout << "Requested Subreddit not found!";
+        throw InvalidInput("Invalid Subreddit name!");
+        return;
+    }
+    if (s[i]->posts.size() == 0)
+    {
+        cout << "There are no posts in this subreddit!" << endl;
+        return;
+    }
+    int j = 0;
+    for (j = 0; j < s[i]->posts.size(); j++)
+    {
+        cout << " ******************************************** " << endl;
+        s[i]->posts[j]->printPost();
+        cout << " ____________________________________________ " << endl;
+        cout << "1: Comment on this" << endl;
+        cout << "2: Next post" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice == 2 && j >= s[i]->posts.size() - 1)
+        {
+            cout << "No more posts to show!" << endl;
+            cout << " ******************************************** " << endl;
+            return;
+        }
+        if (choice == 1)
+        {
+            signedInUser->commentIt(s[i]->posts[j]);
+            cout << "Comment added successfully!" << endl;
+            cout << " ******************************************** " << endl;
+            return;
+        }
+        cout << " ******************************************** " << endl;
+    }
+}
+
+void replyGlobal(vector<Subreddit *> &s)
+{
+}

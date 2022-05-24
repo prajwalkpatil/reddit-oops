@@ -45,12 +45,15 @@ string getDateTime();
 void display_logo();
 void red();
 void reset();
-void init(vector<Subreddit *> &s, vector<User *> &u);
 int logIn(vector<User *> u);
+void init(vector<Subreddit *> &s, vector<User *> &u);
 void createPostGlobal(vector<Subreddit *> &s);
 void createSubredditGlobal(vector<Subreddit *> &s);
 void joinSubredditGlobal(vector<Subreddit *> &s);
 void messageUserGlobal(vector<User *> &u);
+void commentGlobal(vector<Subreddit *> &s);
+void replyGlobal(vector<Subreddit *> &s);
+
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
