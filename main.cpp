@@ -16,6 +16,7 @@ int main()
     // runAllTestCases();
     while (1)
     {
+        getchar();
         try
         {
             cout << "============ MAIN MENU =============" << endl;
@@ -38,6 +39,7 @@ int main()
                 cout << "You must log-in first!" << endl;
                 continue;
             }
+            getchar();
             switch (choice)
             {
             case 1:
@@ -50,15 +52,18 @@ int main()
                 break;
             case 3:
                 createPostGlobal(s);
+                getchar();
                 break;
             case 4:
                 joinSubredditGlobal(s);
+                getchar();
                 break;
             case 5:
                 s[0]->printSubreddit(s);
                 break;
             case 6:
                 messageUserGlobal(u);
+                getchar();
                 break;
             case 7:
                 commentGlobal(s);
@@ -71,6 +76,7 @@ int main()
                 break;
             case 10:
                 createSubredditGlobal(s);
+                getchar();
                 break;
             case 11:
                 inboxGlobal();

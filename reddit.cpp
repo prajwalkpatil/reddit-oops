@@ -110,13 +110,15 @@ void Subreddit::printMods()
 
 void Notification::printMsg()
 {
+    cout << endl;
+    cout << "Message : ";
     cout << msg << endl;
 }
 
 void Message::printMsg()
 {
-    cout << "User id : " << fromId << endl;
-    cout << "Message : ";
+    cout << endl;
+    cout << "User id : u/" << fromId << endl;
     Notification::printMsg();
 }
 
@@ -264,6 +266,37 @@ void User::createPost(Subreddit *&s)
     l->writeLog();
 }
 
+void User::createPost(Subreddit *&s, int choiceInp, string titleInp, string textInp, int sizeInp = 0, string formatInp = ".png")
+{
+    int choice;
+    Post *newPost;
+    PostType t;
+    choice = choiceInp;
+    getchar();
+    switch (choice)
+    {
+    case 1:
+        t = PT_TextPost;
+        break;
+    case 2:
+        t = PT_ImagePost;
+        break;
+    case 3:
+        t = PT_VideoPost;
+        break;
+    default:
+        throw InvalidInput("Enter a valid choice.");
+        break;
+    }
+    newPost = newPost->createPost(t, titleInp, textInp, sizeInp, formatInp);
+    newPost->userName = userId;
+    s->posts.push_back(newPost);
+    posts.push_back(newPost);
+    Logger *l = l->getInstance();
+    l->setLog("Post created successfully!");
+    l->writeLog();
+}
+
 void User::commentIt(Post *&p)
 {
     Comment *newComment = new Comment();
@@ -330,6 +363,43 @@ Post *Post::createPost(PostType pType)
         }
         cout << "Enter the format of the video: ";
         cin >> videoPost->format;
+        videoPost->dateTime = getDateTime();
+        return videoPost;
+    }
+}
+Post *Post::createPost(PostType pType, string titleInp, string textInp, int sizeInp, string formatInp)
+{
+    Post *pNew;
+    Text *textPost;
+    Image *imagePost;
+    Video *videoPost;
+    if (pType == PT_TextPost)
+    {
+        textPost = new Text();
+        textPost->postTitle = titleInp;
+        textPost->postContent = textInp;
+        textPost->dateTime = getDateTime();
+        return textPost;
+    }
+    else if (pType == PT_ImagePost)
+    {
+        imagePost = new Image();
+        imagePost->postTitle = titleInp;
+        imagePost->imageSize = sizeInp;
+        imagePost->format = formatInp;
+        imagePost->dateTime = getDateTime();
+        return imagePost;
+    }
+    else if (pType == PT_VideoPost)
+    {
+        videoPost = new Video();
+        videoPost->postTitle = titleInp;
+        videoPost->videoSize = sizeInp;
+        if (videoPost->videoSize > 20)
+        {
+            throw VideoSizeError("Video size cannot exceed 20Mb");
+        }
+        videoPost->format = formatInp;
         videoPost->dateTime = getDateTime();
         return videoPost;
     }
@@ -403,16 +473,20 @@ void init(vector<Subreddit *> &s, vector<User *> &u)
     t->writeLog();
 
     // TODO: Insert Users
-    User *u_temp = new User("brockvillecircular@gmail.com", "Richard D", "brockvillecircular", 23, "123");
+    User *u_temp = new User("siddaraj@gmail.com", "Siddaraj H", "siddaraj", 20, "123");
     u.push_back(u_temp);
-    u_temp = new User("wombatphilips@gmail.com", "John M", "wombatphilips", 19, "123");
+    u_temp = new User("anirudh@gmail.com", "Anirudh K", "anirudh", 19, "123");
     u.push_back(u_temp);
-    u_temp = new User("costlyhuge@gmail.com", "Rick Astley", "costlyhuge", 28, "123");
+    u_temp = new User("kishor@gmail.com", "Kishor Kumar", "kishor", 20, "123");
     u.push_back(u_temp);
-    u_temp = new User("scholarstalk@gmail.com", "Henry Smith", "scholarstalk", 32, "123");
+    u_temp = new User("vinayak@gmail.com", "Vinayak M", "vinayak", 21, "123");
     u.push_back(u_temp);
-    u_temp = new User("freakinginsane@gmail.com", "Prajwal Patil", "freakinginsane", 19, "123");
+    u_temp = new User("prajwal@gmail.com", "Prajwal Patil", "prajwal", 19, "123");
     u.push_back(u_temp);
+    u[0]->createPost(s[1], 1, "Bugs Are Evolving to Eat Plastic, Study Finds", "This is really interesting");
+    u[1]->createPost(s[1], 1, "Meta-analysis of 15 studies on depression suggests significant mental health benefits from being physically active", "https://www.psypost.org/2022/05/");
+    u[2]->createPost(s[2], 1, "Bill Gates said, I will always choose a lazy person to do a difficult job because a lazy person will find an easy way to do it. What's a real-life example of this?", "Any comments?");
+    u[3]->createPost(s[3], 1, "James Web Space Telescope runs on C++ code.", "Watch on Youtube");
     signedInUser = u_temp;
     t = t->getInstance();
     t->setLog("Users initialized!");
@@ -613,6 +687,7 @@ void messageUserGlobal(vector<User *> &u)
     cout << "=================== MESSAGE USER =====================" << endl;
     cout << "Enter the user name of Recipient: ";
     cin >> tempUser;
+    getchar();
     for (i = 0; i < u.size(); i++)
     {
         if (u[i]->userId == tempUser)
@@ -628,8 +703,9 @@ void messageUserGlobal(vector<User *> &u)
     }
     Message *m = new Message();
     m->fromId = signedInUser->userId;
+    getchar();
     cout << "Enter a message: ";
-    cin >> m->msg;
+    getline(cin, m->msg);
     if (!u[i]->userInbox)
     {
         u[i]->userInbox = new Inbox();
@@ -637,6 +713,7 @@ void messageUserGlobal(vector<User *> &u)
     u[i]->userInbox->notifs.push_back(m);
     u[i]->userInbox->noOfNotification++;
     cout << "Message sent successfully!" << endl;
+    getchar();
 }
 
 void commentGlobal(vector<Subreddit *> &s)

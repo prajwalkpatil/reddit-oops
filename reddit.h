@@ -154,6 +154,7 @@ public:
     void registerUser(string emailInput, string nameInput, string userIdInput, int ageInput, string passwordInput);
     /////// TODO: Functions that use other classes
     void createPost(Subreddit *&s);
+    void createPost(Subreddit *&s, int choice, string titleInp, string textInp, int sizeInp, string formatInp);
     void join(Subreddit *&s);
     void replyIt(Comment *&c);
     void commentIt(Post *&p);
@@ -208,7 +209,7 @@ public:
     Notification() : msg("") {}
     Notification(string m) : msg(m) {}
 
-    void printMsg();
+    virtual void printMsg();
 };
 
 class Message : public Notification
@@ -249,6 +250,7 @@ public:
 
     // TODO Uses Function Handling
     static Post *createPost(PostType pType);
+    static Post *createPost(PostType pType, string titleInp, string textInp, int sizeInp, string formatInp);
     virtual void printPost();
 };
 
