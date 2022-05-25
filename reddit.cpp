@@ -36,6 +36,27 @@ void User::registerUser()
     l->writeLog();
 }
 
+void User::registerUser(string emailInput, string nameInput, string userIdInput, int ageInput, string passwordInput)
+{
+    email = emailInput;
+    name = nameInput;
+    userId = userIdInput;
+    age = ageInput;
+    password = passwordInput;
+
+    //! Check if Email id contains @ and . - validation
+    if (!(email.find('@') != std::string::npos && email.find('.') != std::string::npos))
+        throw RegistrationError("Invalid email");
+    //! If space is found in userId - validation
+    if (userId.find(' ') != std::string::npos)
+        throw SpaceError("User name cannot contain spaces!");
+    if (userId.size() > 15)
+        throw LengthError("User name cannot exceed 15 characters");
+    //! Minimum age check - validation
+    if (age < 13)
+        throw MinAgeError("You must be atleast 13 to be able to register yourself!");
+}
+
 void User::printDetails()
 {
     cout << "********* DETAILS *********" << endl;
@@ -904,5 +925,276 @@ void voteGlobal(vector<Subreddit *> &s)
         {
             return;
         }
+    }
+}
+
+void testcase1()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 1 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumargmail" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+    u->registerUser("raghavkumargmail", "Raghav Kumar", "RaghavKumar", 20, "123");
+    cout << "Test Case 1 Passed!" << endl;
+}
+
+void testcase2()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 2 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+    u->registerUser("raghavkumar@gmail", "Raghav Kumar", "RaghavKumar", 20, "123");
+    cout << "Test Case 2 Passed!" << endl;
+}
+
+void testcase3()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 3 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumargmail.com" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumargmail.com", "Raghav Kumar", "RaghavKumar", 20, "123");
+    cout << "Test Case 3 Passed!" << endl;
+}
+
+void testcase4()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 4 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail.com" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumar@gmail.com", "Raghav Kumar", "RaghavKumar", 20, "123");
+    cout << "Test Case 4 Passed!" << endl;
+}
+
+void testcase5()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 5 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail.com" << endl;
+    cout << "UserId: Raghav Kumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumar@gmail.com", "Raghav Kumar", "Raghav Kumar", 20, "123");
+    cout << "Test Case 5 Passed!" << endl;
+}
+
+void testcase6()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 6 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail.com" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumar@gmail.com", "Raghav Kumar", "RaghavKumar", 20, "123");
+    cout << "Test Case 6 Passed!" << endl;
+}
+
+void testcase7()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 7 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail.com" << endl;
+    cout << "UserId: RaghavKumar1234567890" << endl;
+    cout << "Age: 20" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumar@gmail.com", "Raghav Kumar", "RaghavKumar1234567890", 20, "123");
+    cout << "Test Case 7 Passed!" << endl;
+}
+
+void testcase8()
+{
+    cout << endl;
+    cout << "========== RUNNING TESTCASE 8 ===========" << endl;
+    cout << "Name: Raghav Kumar" << endl;
+    cout << "Email: raghavkumar@gmail.com" << endl;
+    cout << "UserId: RaghavKumar" << endl;
+    cout << "Age: 12" << endl;
+    User *u = new User();
+
+    u->registerUser("raghavkumar@gmail.com", "Raghav Kumar", "RaghavKumar", 12, "123");
+    cout << "Test Case 8 Passed!" << endl;
+}
+
+void runTestCase(void (*func)())
+{
+    try
+    {
+        func();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+        return;
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+        return;
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+        return;
+    }
+}
+
+void runAllTestCases()
+{
+    try
+    {
+        testcase1();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+    try
+    {
+        testcase2();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase3();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase4();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase5();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase6();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase7();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
+    }
+
+    try
+    {
+        testcase8();
+    }
+    catch (RegistrationError r)
+    {
+        r.printError();
+    }
+    catch (InvalidInput r)
+    {
+        r.printError();
+    }
+    catch (...)
+    {
+        cout << "Error! " << endl;
     }
 }

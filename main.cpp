@@ -13,6 +13,7 @@ int main()
     l->setLog("Reddit opened successfully!");
     l->writeLog();
     init(s, u);
+    // runAllTestCases();
     while (1)
     {
         try
@@ -78,7 +79,7 @@ int main()
                 l = l->getInstance();
                 l->setLog("Reddit terminated successfully!\n\n");
                 l->writeLog();
-                exit(0);
+                exit(EXIT_SUCCESS);
                 break;
             }
         }

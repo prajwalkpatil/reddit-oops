@@ -2,6 +2,7 @@
 #define _REDDIT_INCLUDED_
 
 #include <iostream>
+#include <stdlib.h>
 #include <string>
 #include <exception>
 #include <vector>
@@ -55,6 +56,18 @@ void commentGlobal(vector<Subreddit *> &s);
 void replyGlobal(vector<Subreddit *> &s);
 void inboxGlobal();
 void voteGlobal(vector<Subreddit *> &s);
+
+void testcase1();
+void testcase2();
+void testcase3();
+void testcase4();
+void testcase5();
+void testcase6();
+void testcase7();
+void testcase8();
+void runTestCase(void (*func)());
+void runAllTestCases();
+
 //* >>>>>>>>> Class declarations >>>>>>>>>>>>>
 class InvalidInput
 {
@@ -138,6 +151,7 @@ public:
     User(string emailInput, string nameInput, string userIdInput, int ageInput, string passwordInput) : email(emailInput), name(nameInput), userId(userIdInput), age(ageInput), password(passwordInput){};
 
     void registerUser();
+    void registerUser(string emailInput, string nameInput, string userIdInput, int ageInput, string passwordInput);
     /////// TODO: Functions that use other classes
     void createPost(Subreddit *&s);
     void join(Subreddit *&s);
