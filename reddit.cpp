@@ -14,9 +14,9 @@ void User::registerUser()
     //! Check if Email id contains @ and . - validation
     if (!(email.find('@') != std::string::npos && email.find('.') != std::string::npos))
         throw RegistrationError("Invalid email");
-
+    getchar();
     cout << "UserId: ";
-    cin >> userId;
+    getline(cin, userId);
     //! If space is found in userId - validation
     if (userId.find(' ') != std::string::npos)
         throw SpaceError("User name cannot contain spaces!");
@@ -485,7 +485,7 @@ void init(vector<Subreddit *> &s, vector<User *> &u)
     u.push_back(u_temp);
     u[0]->createPost(s[1], 1, "Bugs Are Evolving to Eat Plastic, Study Finds", "This is really interesting");
     u[1]->createPost(s[1], 1, "Meta-analysis of 15 studies on depression suggests significant mental health benefits from being physically active", "https://www.psypost.org/2022/05/");
-    u[2]->createPost(s[2], 1, "Bill Gates said, I will always choose a lazy person to do a difficult job because a lazy person will find an easy way to do it. What's a real-life example of this?", "Any comments?");
+    u[2]->createPost(s[0], 1, "Bill Gates said, I will always choose a lazy person to do a difficult job because a lazy person will find an easy way to do it. What's a real-life example of this?", "Any comments?");
     u[3]->createPost(s[3], 1, "James Web Space Telescope runs on C++ code.", "Watch on Youtube");
     signedInUser = u_temp;
     t = t->getInstance();
